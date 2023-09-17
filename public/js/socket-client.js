@@ -1,40 +1,47 @@
-// html refs
-const txtOnline = document.querySelector('#txtOnline')
-const txtOffline = document.querySelector('#txtOffline')
-const formMessage = document.querySelector('#formMessage')
 
-const socket = io()
+// Referencias del HTML
+const lblOnline  = document.querySelector('#lblOnline');
+const lblOffline = document.querySelector('#lblOffline');
+const txtMensaje = document.querySelector('#txtMensaje');
+const btnEnviar  = document.querySelector('#btnEnviar');
+
+
+const socket = io();
+
+
 
 socket.on('connect', () => {
-    console.log('[client] connected')
-    txtOffline.style.display = 'none'
-    txtOnline.style.display = ''
-})
+    // console.log('Conectado');
+
+    lblOffline.style.display = 'none';
+    lblOnline.style.display  = '';
+
+});
 
 socket.on('disconnect', () => {
-    console.log('[cliente] disconnected')
-    txtOffline.style.display = ''
-    txtOnline.style.display = 'none'
+    // console.log('Desconectado del servidor');
+
+    lblOnline.style.display  = 'none';
+    lblOffline.style.display = '';
+});
+
+
+socket.on('enviar-mensaje', (payload) => {
+    console.log( payload )
 })
 
-socket.on('new-message', (payload) => {
-    console.log('message received', payload)
-})
 
-formMessage.addEventListener('submit', (event) => {
-    event.preventDefault()
-    const { target } = event
-    const message = target.message.value
+btnEnviar.addEventListener( 'click', () => {
+
+    const mensaje = txtMensaje.value;
     const payload = {
-        id: '1324',
-        message,
-        date: new Date()
+        mensaje,
+        id: '123ABC',
+        fecha: new Date().getTime()
     }
+    
+    socket.emit( 'enviar-mensaje', payload, ( id ) => {
+        console.log('Desde el server', id );
+    });
 
-    // this emit contain a callback function
-    // it's excute when the server finish the process and send us the response
-    socket.emit('new-message', payload, (id) => {
-        console.log("desde server", id)
-    })
-
-})
+});
