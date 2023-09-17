@@ -8,28 +8,29 @@ A basic NodeJS server for sockets connections using socket.io library
 
 Replace PORT variable
 
-´´´bash
+```bash
 cp .env.example .env
-´´´
+```
 
 ## Install dependencies
 
-´´´bash
+```bash
 yarn install
-´´´
+```
 
 ## run App
 
 Development mode
 
-´´´bash
+```bash
 yarn dev
-´´´
+```
+
 Production mode
 
-´´´bash
+```bash
 yarn start
-´´´
+```
 
 ## display frontend
 
